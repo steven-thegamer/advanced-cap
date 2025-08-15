@@ -1,0 +1,6 @@
+ID,name,gender_code,email,joinedDate,department_ID
+1,Steven,m,steven.samuel@gmail.com,2024-11-03,1
+2,Fahri,m,ahmad.fahri@gmail.com,2024-11-03,1
+3,Sabila,f,sabila@gmail.com,2025-06-07,2
+4,Joan,m,joan@gmail.com,2024-11-03,3
+5,Alex,m,alex.rainer@gmail.com,2024-11-03,2
