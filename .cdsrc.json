@@ -1,5 +1,11 @@
 {
   "cdsc": {
     "draftMessages": true
-  }
+  },
+  "requires": {
+    "db": "hana"
+  },
+  "hana" : {
+    "deploy-format": "hdbtable"
+  }  
 }
