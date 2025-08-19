@@ -1,2 +1,2 @@
 const fs = require('fs');
-fs.writeFileSync('./default-evn.json',process.env.VCAP_SERVICES);
+fs.writeFileSync('./default-env.json',process.env.VCAP_SERVICES);
