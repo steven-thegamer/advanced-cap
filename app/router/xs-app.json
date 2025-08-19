@@ -1,0 +1,10 @@
+{
+  "routes": [
+    {
+      "source": "^/(.*)$",
+      "target": "$1",
+      "destination": "advanced-cap-srv-api",
+      "csrfProtection": true
+    }
+  ]
+}

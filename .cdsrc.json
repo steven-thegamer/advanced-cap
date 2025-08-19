@@ -3,9 +3,12 @@
     "draftMessages": true
   },
   "requires": {
-    "db": "hana"
+    "db": "hana",
+    "[production]": {
+      "auth": "xsuaa"
+    }
   },
-  "hana" : {
+  "hana": {
     "deploy-format": "hdbtable"
-  }  
+  }
 }
