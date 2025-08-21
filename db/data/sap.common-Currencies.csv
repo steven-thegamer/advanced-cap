@@ -1,0 +1,11 @@
+code,symbol,minorUnit,name,descr
+USD,$,2,US Dollar,United States Dollar
+EUR,€,2,Euro,European Union Euro
+JPY,¥,0,Japanese Yen,Japan Yen
+GBP,£,2,Pound Sterling,British Pound Sterling
+AUD,$,2,Australian Dollar,Australia Dollar
+CAD,$,2,Canadian Dollar,Canada Dollar
+CHF,Fr,2,Swiss Franc,Switzerland Franc
+CNY,¥,2,Chinese Yuan,China Yuan Renminbi
+INR,₹,2,Indian Rupee,India Rupee
+BRL,R$,2,Brazilian Real,Brazil Real
