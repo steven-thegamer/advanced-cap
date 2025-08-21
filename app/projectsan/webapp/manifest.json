@@ -1,173 +1,179 @@
 {
-  "_version": "1.65.0",
-  "sap.app": {
-    "id": "projectsan",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
-    },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:alp",
-      "version": "1.17.6",
-      "toolsId": "ac05bc73-e8de-4114-b24f-ae28b8718086"
-    },
-    "dataSources": {
-      "mainService": {
-        "uri": "/odata/v4/MainService/",
-        "type": "OData",
-        "settings": {
-          "annotations": [],
-          "odataVersion": "4.0"
-        }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "projects-analyze": {
-          "semanticObject": "projects",
-          "action": "analyze",
-          "title": "{{projects-analyze.flpTitle}}",
-          "subTitle": "{{projects-analyze.flpSubtitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
-        }
-      }
-    }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
-    },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "flexEnabled": true,
-    "dependencies": {
-      "minUI5Version": "1.139.0",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.fe.templates": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "projectsan.i18n.i18n"
-        }
-      },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true
-        }
-      },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
-      }
-    },
-    "resources": {
-      "css": []
-    },
-    "routing": {
-      "config": {},
-      "routes": [
-        {
-          "pattern": ":?query:",
-          "name": "ProjectsList",
-          "target": "ProjectsList"
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "projectsan",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
         },
-        {
-          "pattern": "Projects({key}):?query:",
-          "name": "ProjectsObjectPage",
-          "target": "ProjectsObjectPage"
-        }
-      ],
-      "targets": {
-        "ProjectsList": {
-          "type": "Component",
-          "id": "ProjectsList",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "contextPath": "/Projects",
-              "variantManagement": "Page",
-              "navigation": {
-                "Projects": {
-                  "detail": {
-                    "route": "ProjectsObjectPage"
-                  }
-                }
-              },
-              "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.LineItem": {
-                  "tableSettings": {
-                    "type": "AnalyticalTable",
-                    "selectionMode": "Auto"
-                  }
-                }
-              },
-              "views": {
-                "paths": [
-                  {
-                    "primary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#mixed"
-                      }
-                    ],
-                    "secondary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
-                      }
-                    ],
-                    "defaultPath": "both"
-                  }
-                ]
-              }
-            }
-          }
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:alp",
+            "version": "1.17.6",
+            "toolsId": "ac05bc73-e8de-4114-b24f-ae28b8718086"
         },
-        "ProjectsObjectPage": {
-          "type": "Component",
-          "id": "ProjectsObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Projects"
+        "dataSources": {
+            "mainService": {
+                "uri": "/odata/v4/MainService/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "odataVersion": "4.0"
+                }
             }
-          }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "projects-analyze": {
+                    "semanticObject": "projects",
+                    "action": "analyze",
+                    "title": "{{projects-analyze.flpTitle}}",
+                    "subTitle": "{{projects-analyze.flpSubtitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            }
         }
-      }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.139.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "projectsan.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "ProjectsList",
+                    "target": "ProjectsList"
+                },
+                {
+                    "pattern": "Projects({key}):?query:",
+                    "name": "ProjectsObjectPage",
+                    "target": "ProjectsObjectPage"
+                }
+            ],
+            "targets": {
+                "ProjectsList": {
+                    "type": "Component",
+                    "id": "ProjectsList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Projects",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "Projects": {
+                                    "detail": {
+                                        "route": "ProjectsObjectPage"
+                                    }
+                                }
+                            },
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "type": "AnalyticalTable",
+                                        "selectionMode": "Auto"
+                                    }
+                                }
+                            },
+                            "views": {
+                                "paths": [
+                                    {
+                                        "primary": [
+                                            {
+                                                "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#mixed"
+                                            }
+                                        ],
+                                        "secondary": [
+                                            {
+                                                "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
+                                            }
+                                        ],
+                                        "defaultPath": "both"
+                                    }
+                                ]
+                            },
+                            "keyPerformanceIndicators": {
+                                "PriceKPI": {
+                                    "entitySet": "Projects",
+                                    "qualifier": "PriceKPI"
+                                }
+                            }
+                        }
+                    }
+                },
+                "ProjectsObjectPage": {
+                    "type": "Component",
+                    "id": "ProjectsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "contextPath": "/Projects"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "analytical"
     }
-  },
-  "sap.fiori": {
-    "registrationIds": [],
-    "archeType": "analytical"
-  }
 }

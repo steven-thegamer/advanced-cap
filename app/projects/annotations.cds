@@ -131,6 +131,17 @@ annotate service.Projects with @(
             price,
         ],
     },
+    UI.Chart #chartAverage : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Donut,
+        Dimensions : [
+            difficulty_code,
+        ],
+        Measures : [
+            price,
+        ],
+    }
+    ,
     UI.SelectionPresentationVariant #chartView : {
         $Type : 'UI.SelectionPresentationVariantType',
         PresentationVariant : {
