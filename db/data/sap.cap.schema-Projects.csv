@@ -1,0 +1,16 @@
+ID,difficulty_code,involvedEmployee_ID,price,Currency_code,name,descr
+1,easy,1,500000,CNY,TAWA_EWM_00166,Enhanced Warehouse Management from /SCWM/MON
+2,easy,1,250000,CNY,TAWA_EWM_00167,Enhanced Warehouse Management from MB52
+3,hard,2,3000000,CNY,NAGASE_HELIOS_FICO,Nagase Project for FICO Module
+4,medium,3,5000000,CNY,ZSD Workflow,Precix Project Workflow ZD658
+5,very easy,2,120000,CNY,TAWA_EWM_00168,Simple EWM Stock Overview
+6,medium,4,800000,CNY,SD_BILLING_002,SD Billing Automation
+7,very hard,5,12000000,CNY,FI_YEAR_END_003,FI Year-End Closing Automation
+8,hard,3,3500000,CNY,MM_PURCHASE_004,MM Purchase Order Optimization
+9,easy,1,400000,CNY,HR_ONBOARD_005,HR Onboarding Workflow
+10,medium,2,950000,CNY,PP_MRP_006,PP MRP Enhancement
+11,very hard,4,15000000,CNY,CO_COST_007,CO Cost Center Reporting
+12,very easy,5,100000,CNY,QM_INSPECT_008,QM Inspection Lot Simplification
+13,hard,2,4200000,CNY,SD_DELIVERY_009,SD Delivery Scheduling
+14,easy,3,600000,CNY,PM_MAINT_010,PM Maintenance Order Tracking
+15,medium,1,1100000,CNY,WM_BIN_011,WM Bin Location Management
