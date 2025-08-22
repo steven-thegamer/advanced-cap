@@ -18,6 +18,7 @@ import com.sap.cds.services.cds.CqnService;
 import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
+import com.sap.cds.services.persistence.PersistenceService;
 import com.steven.cap.advanced.utils.CheckDataVisitor;
 import com.steven.cap.advanced.utils.UnmanagedReportUtils;
 
@@ -30,7 +31,7 @@ import cds.gen.mainservice.Projects_;
 public class ProjectsServiceHandler implements EventHandler {
 
     @Autowired
-    CqnService mainService;
+    PersistenceService mainService;
 
     @On(event = CqnService.EVENT_READ, entity = Projects_.CDS_NAME)
     public void getProjects(CdsReadEventContext context) {
@@ -52,15 +53,14 @@ public class ProjectsServiceHandler implements EventHandler {
         Result result = mainService.run(select);
         result.forEach((row) -> {
             Projects resultRow = Projects.create();
-
             resultRow.setName(row.get("name").toString());
             resultRow.setCurrencyCode(row.get("currency_code").toString());
             resultRow.setDescr(row.get("descr").toString());
             resultRow.setDifficultyCode(row.get("difficulty_code").toString());
             resultRow.setId(row.get("ID").toString());
-            BigDecimal priceValue = new BigDecimal(row.get("price").toString());;
+            BigDecimal priceValue = new BigDecimal(row.get("price").toString());
             resultRow.setPrice(priceValue);
-            resultRow.setInvolvedEmployeeId(row.get("involvedEmployee_id").toString());
+            resultRow.setInvolvedEmployeeId(row.get("involvedEmployee_ID").toString());
 
             // filter
             CheckDataVisitor checkDataVisitor = new CheckDataVisitor(resultRow);
@@ -77,7 +77,6 @@ public class ProjectsServiceHandler implements EventHandler {
         });
 
         if (context.getParameterInfo().getQueryParameter("$apply") != null) {
-
             // aggregate
             List<? extends Map<String, ?>> aggregateResult = UnmanagedReportUtils.aggregate(cqnSelect, resultList);
             // Result resultAggregate = ResultBuilder

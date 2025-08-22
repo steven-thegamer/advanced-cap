@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.sap.cds.ql.cqn.CqnElementRef;
-import com.sap.cds.ql.cqn.CqnFunc;
 import com.sap.cds.ql.cqn.CqnSelect;
 import com.sap.cds.ql.cqn.CqnSelectListItem;
 import com.sap.cds.ql.cqn.CqnSelectListValue;
@@ -54,7 +53,7 @@ public class UnmanagedReportUtils {
             // compare result
             return compareToBuilder.toComparison();
         });
-    }
+    };
 
     public static List<? extends Map<String, ?>> getTopSkip(long top, long skip,
             List<? extends Map<String, ?>> entities) {
@@ -67,9 +66,10 @@ public class UnmanagedReportUtils {
             else topInt = topInt + skipInt;
             return entities.subList(skipInt, topInt);
         }
+
     }
 
-    public static List<Map<String, Object>> aggregate(CqnSelect cqnSelect,
+ public static List< Map<String, Object>> aggregate(CqnSelect cqnSelect,
             List<? extends Map<String, ?>> entities) {
 
         List<CqnSelectListItem> columns = cqnSelect.columns();
@@ -87,139 +87,94 @@ public class UnmanagedReportUtils {
 
             // differ field is aggregate or group by by class name
             Class<?> valueClass = selectListValue.value().getClass();
-            String className = valueClass.getSimpleName();
-            
-            // Handle different CQN value types
-            if (valueClass.getName().contains("CqnFunc") || className.equals("CqnFuncImpl")) {
-                // This is an aggregate function
-                CqnFunc function = (CqnFunc) selectListValue.value();
+            System.out.println(column);
+            System.out.println(valueClass);
+            switch (valueClass.getSimpleName()) {
+                case "ScalarFunctionCall" -> {
+                    // // aggregate
+                    // // get aggregate function
+                    // ScalarFunctionCall<CqnFunc> function = (ScalarFunctionCall<CqnFunc>) selectListValue.value();
 
-                // function name
-                String funcName = function.func();
-                mapCol.put("function", funcName);
+                    // // function name
+                    // String funcName = function.getFunctionName();
+                    // mapCol.put("function", funcName);
 
-                // source field - get the first argument if it exists
-                if (!function.args().isEmpty()) {
-                    Object firstArg = function.args().get(0);
-                    if (firstArg instanceof CqnElementRef) {
-                        CqnElementRef elementRef = (CqnElementRef) firstArg;
-                        mapCol.put("field", elementRef.displayName());
-                    }
+                    // // source field
+                    // if (function.args().size() > 0) {
+                    //     CqnElementRef elementRef = (CqnElementRef) function.args().get(0);
+                    //     mapCol.put("field", elementRef.displayName());
+                    // }
+
+                    // // if function name = singleValue(unit code/currency code) then it should be
+                    // // groupby field
+                    // if ("singleValue".equals(funcName)) {
+                    //     groupByColumnList.add(mapCol);
+                    // } else {
+                    //     aggregateColumnList.add(mapCol);
+                    // }
                 }
-
-                // if function name = singleValue(unit code/currency code) then it should be
-                // groupby field
-                if ("singleValue".equals(funcName)) {
+                case "SingleSeg" -> {
+                    // groupby
+                    CqnElementRef groupbyField = (CqnElementRef) selectListValue.value();
+                    mapCol.put("field", groupbyField.displayName());
                     groupByColumnList.add(mapCol);
-                } else {
-                    aggregateColumnList.add(mapCol);
                 }
-            } else if (selectListValue.value() instanceof CqnElementRef groupbyField) {
-                                // This is a regular field (group by)
-                                mapCol.put("field", groupbyField.displayName());
-                    groupByColumnList.add(mapCol);
+                default -> {
+                }
             }
+
         });
 
-        // Group and aggregate the data
+        // Map<Map<String, ?>, ?> aggregateResults =
+        // entities.stream().collect(Collectors.groupingBy(entity -> {
         List<Map.Entry<Map<String, Object>, Map<String, Object>>> aggregateResults = entities.stream()
                 .collect(Collectors.groupingBy(entity -> {
-                    // group by fields
-                    Map<String, Object> groupByMap = new HashMap<>();
+                    // groub by fields
+                    Map<String, ? super Object> groupByMap = new HashMap<>();
                     groupByColumnList.forEach(groupByColumn -> {
                         String field = groupByColumn.get("field");
-                        if (field != null) {
-                            groupByMap.put(field, entity.get(field));
-                        }
+                        groupByMap.put(field, entity.get(field));
                     });
                     return groupByMap;
 
                 }, Collectors.collectingAndThen(Collectors.toList(), list -> {
                     // aggregate fields
-                    Map<String, Object> aggrMap = new HashMap<>();
+                    Map<String, ? super Object> aggrMap = new HashMap<>();
                     aggregateColumnList.forEach(aggregateColumn -> {
-                        String function = aggregateColumn.get("function");
-                        String alias = aggregateColumn.get("alias");
-                        String field = aggregateColumn.get("field");
 
-                        if (function != null && alias != null) {
-                            switch (function.toUpperCase()) {
-                                case "SUM" -> {
-                                    if (field != null) {
-                                        BigDecimal summary = list.stream()
-                                            .map(e -> {
-                                                Object value = e.get(field);
-                                                if (value instanceof BigDecimal bigDecimal) {
-                                                    return bigDecimal;
-                                                } else if (value instanceof Number) {
-                                                    return new BigDecimal(value.toString());
-                                                }
-                                                return BigDecimal.ZERO;
-                                            })
-                                            .reduce(BigDecimal.ZERO, BigDecimal::add);
-                                        aggrMap.put(alias, summary);
-                                    }
-                                }
-                                case "COUNT" -> {
-                                    long count = list.size();
-                                    aggrMap.put(alias, count);
-                                }
-                                case "AVG" -> {
-                                    if (field != null) {
-                                        BigDecimal sum = list.stream()
-                                            .map(e -> {
-                                                Object value = e.get(field);
-                                                if (value instanceof BigDecimal) {
-                                                    return (BigDecimal) value;
-                                                } else if (value instanceof Number) {
-                                                    return new BigDecimal(value.toString());
-                                                }
-                                                return BigDecimal.ZERO;
-                                            })
-                                            .reduce(BigDecimal.ZERO, BigDecimal::add);
-                                        if (!list.isEmpty()) {
-                                            BigDecimal avg = sum.divide(new BigDecimal(list.size()), BigDecimal.ROUND_HALF_UP);
-                                            aggrMap.put(alias, avg);
-                                        } else {
-                                            aggrMap.put(alias, BigDecimal.ZERO);
-                                        }
-                                    }
-                                }
-                                case "MAX" -> {
-                                    if (field != null) {
-                                        Object max = list.stream()
-                                            .map(e -> e.get(field))
-                                            .filter(v -> v instanceof Comparable)
-                                            .max((a, b) -> ((Comparable) a).compareTo(b))
-                                            .orElse(null);
-                                        aggrMap.put(alias, max);
-                                    }
-                                }
-                                case "MIN" -> {
-                                    if (field != null) {
-                                        Object min = list.stream()
-                                            .map(e -> e.get(field))
-                                            .filter(v -> v instanceof Comparable)
-                                            .min((a, b) -> ((Comparable) a).compareTo(b))
-                                            .orElse(null);
-                                        aggrMap.put(alias, min);
-                                    }
-                                }
+                        switch (aggregateColumn.get("function")) {
+                            case "SUM" -> {
+                                BigDecimal summary = list.stream().map((e) -> {
+                                    return (BigDecimal) e.get(aggregateColumn.get("field"));
+                                }).reduce(BigDecimal.ZERO, (subtotal, element) -> {
+                                    return subtotal.add(element);
+                                });
+                                aggrMap.put(aggregateColumn.get("alias"), summary);
+                            }
+
+                            case "COUNT" -> {
+                                long count = list.stream().collect(Collectors.counting());
+                                aggrMap.put(aggregateColumn.get("alias"), count);
+                            }
+
+                            default -> {
                             }
                         }
                     });
 
                     return aggrMap;
+
                 }))).entrySet().stream().toList();
 
         // Merge groupByFields and aggregateFields
         List<Map<String, Object>> results = new ArrayList<>();
         aggregateResults.forEach((result) -> {
-            Map<String, Object> map = new HashMap<>(result.getKey());
+            Map<String, ? super Object> map = new HashMap<>(result.getKey());
             map.putAll(result.getValue());
             results.add(map);
         });
-        
         return results;
+
     }
+    
 }
