@@ -136,7 +136,7 @@
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>add-source</goal>
-                        </goals>    
+                        </goals>
                         <configuration>
                             <sources>
                                 <source>${project.basedir}/src/gen/java</source>

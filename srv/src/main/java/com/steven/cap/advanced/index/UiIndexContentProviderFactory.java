@@ -42,6 +42,7 @@ public class UiIndexContentProviderFactory implements IndexContentProviderFactor
                 public void writeContent(PrintWriter writer, String contextPath) {
                         writer.print(ENDPOINT_START);
                         writer.printf(ENDPOINT, contextPath + "/employees/webapp/index.html?sap-ui-xx-viewCache=false", "Manage Employees");
+                        writer.printf(ENDPOINT, contextPath + "/projects/webapp/index.html?sap-ui-xx-viewCache=false", "Analyze Projects");
                         writer.print(ENDPOINT_END);
                 }
         }
