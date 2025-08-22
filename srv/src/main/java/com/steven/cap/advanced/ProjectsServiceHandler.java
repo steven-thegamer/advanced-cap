@@ -3,6 +3,7 @@ package com.steven.cap.advanced;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import com.sap.cds.services.handler.EventHandler;
 import com.sap.cds.services.handler.annotations.On;
 import com.sap.cds.services.handler.annotations.ServiceName;
 import com.steven.cap.advanced.utils.CheckDataVisitor;
+import com.steven.cap.advanced.utils.UnmanagedReportUtils;
 
 import cds.gen.mainservice.MainService_;
 import cds.gen.mainservice.Projects;
@@ -74,11 +76,36 @@ public class ProjectsServiceHandler implements EventHandler {
             }
         });
 
-        long inlineCount = resultList.size();
+        if (context.getParameterInfo().getQueryParameter("$apply") != null) {
 
-        Result finalResult = ResultBuilder.selectedRows(resultList).inlineCount(inlineCount).result();
-        context.setResult(finalResult);
+            // aggregate
+            List<? extends Map<String, ?>> aggregateResult = UnmanagedReportUtils.aggregate(cqnSelect, resultList);
+            // Result resultAggregate = ResultBuilder
+            // sort
+            UnmanagedReportUtils.sort(cqnSelect.orderBy(), aggregateResult);
 
+            // inlineCount
+            long inlineCount = aggregateResult.size();
+            List<? extends Map<String, ?>> resultsPaging = UnmanagedReportUtils.getTopSkip(context.getCqn().top(),
+                    context.getCqn().skip(), aggregateResult);
+            Result resultFinal = ResultBuilder.selectedRows(resultsPaging).inlineCount(inlineCount).result();
+
+            context.setResult(resultFinal);
+
+        } else {
+            // sort
+            UnmanagedReportUtils.sort(cqnSelect.orderBy(), resultList);
+
+            // inlineCount
+            long inlineCount = resultList.size();
+            // paging
+            List<? extends Map<String, ?>> results2 = UnmanagedReportUtils.getTopSkip(context.getCqn().top(),
+                    context.getCqn().skip(), resultList);
+
+            Result resultFinal = ResultBuilder.selectedRows(results2).inlineCount(inlineCount).result();
+
+            context.setResult(resultFinal);
+        }
     }
 
 }
