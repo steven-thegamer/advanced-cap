@@ -5,6 +5,20 @@
   "license": "ISC",
   "repository": "<Add your repository here>",
   "devDependencies": {
-    "@sap/cds-dk": "^9.1.3"
-  }
+    "@sap/cds-dk": "9.0.5"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "./db/db.sqlite",
+          "schema_evolution": "auto"
+        }
+      }
+    }
+  },
+  "sapux": [
+    "app/employees"
+  ]
 }

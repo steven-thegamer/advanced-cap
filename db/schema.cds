@@ -9,6 +9,7 @@ type EMail : String(100) @assert.format : '^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$';
     key code : String(1);
 }
 
+@fiori.draft.enabled
 entity Employee {
     key ID : Numc5;
     name : String;
@@ -16,6 +17,7 @@ entity Employee {
     email : String;
     joinedDate : Date;
     department : Association to one Department; 
+    photo : LargeBinary @Core.MediaType: 'image/png';
 }
 
 entity Department {
@@ -23,4 +25,9 @@ entity Department {
     title : String;
     description : String;
     employees : Association to many Employee on employees.department = $self;
+}
+
+@cds.persistence.exists
+entity Upload @odata.singleton {
+    file : LargeBinary @Core.MediaType: 'application/vnd.ms-excel'; 
 }
